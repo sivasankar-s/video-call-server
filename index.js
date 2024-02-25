@@ -22,10 +22,7 @@ import authRoutes from './routes/auth.js'
 const app = express()
 
 app.use(bodyParser.json())
-app.use(cors({
-    origin: 'https://video-call-psi.vercel.app', // frontend URL
-    credentials: true,
-}))
+app.use(cors())
 
 // const server = http.createServer(app);
 
@@ -33,9 +30,9 @@ const server = createServer(app);
 
 const io = new Server(server, {
     cors: {
-        origin: 'https://video-call-psi.vercel.app',
+        origin: '*',
         methods: ['GET', 'POST'],
-        credentials: true
+        // credentials: true
     }
 });
 
