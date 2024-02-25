@@ -1,5 +1,5 @@
 import express from 'express';
-import { alumniSignIn, alumniSignUp, broadcast, consumer, studentSignIn, studentSignUp } from '../controllers/auth.js';
+import { alumniSignIn, alumniSignUp, studentSignIn, studentSignUp } from '../controllers/auth.js';
 
 const router = express.Router();
 
@@ -11,8 +11,8 @@ router.post("/loginAlumni", alumniSignIn);
 
 router.post("/loginStudent", studentSignIn);
 
-router.post("/consumer", consumer);
+// router.post("/consumer", consumer);
 
-router.post("/broadcast", broadcast);
+// router.post("/broadcast", broadcast);
 
 export default router;

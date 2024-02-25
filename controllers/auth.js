@@ -3,8 +3,8 @@ import mongoose from 'mongoose';
 import jwt from 'jsonwebtoken';
 // const webrtc = require("wrtc");
 // import {RTCPeerConnection, RTCSessionDescription} from 'wrtc'
-import pkg from 'wrtc';
-const {RTCPeerConnection, RTCSessionDescription} = pkg;
+// import pkg from 'wrtc';
+// const {RTCPeerConnection, RTCSessionDescription} = pkg;
 
 let senderStream;
 
@@ -104,46 +104,46 @@ export const studentSignIn = async (req, res) => {
     }
 }
 
-export const consumer = async ({body}, res) => {
-    const peer = new RTCPeerConnection({
-        iceServers: [
-            {
-                urls: "stun:stun.stunprotocol.org"
-            }
-        ]
-    });
-    const desc = new RTCSessionDescription(body.sdp);
-    await peer.setRemoteDescription(desc);
-    senderStream.getTracks().forEach(track => peer.addTrack(track, senderStream));
-    const answer = await peer.createAnswer();
-    await peer.setLocalDescription(answer);
-    const payload = {
-        sdp: peer.localDescription
-    }
+// export const consumer = async ({body}, res) => {
+//     const peer = new RTCPeerConnection({
+//         iceServers: [
+//             {
+//                 urls: "stun:stun.stunprotocol.org"
+//             }
+//         ]
+//     });
+//     const desc = new RTCSessionDescription(body.sdp);
+//     await peer.setRemoteDescription(desc);
+//     senderStream.getTracks().forEach(track => peer.addTrack(track, senderStream));
+//     const answer = await peer.createAnswer();
+//     await peer.setLocalDescription(answer);
+//     const payload = {
+//         sdp: peer.localDescription
+//     }
 
-    res.json(payload);
-}
+//     res.json(payload);
+// }
 
-export const broadcast = async ({body}, res) => {
-    const peer = new RTCPeerConnection({
-        iceServers: [
-            {
-                urls: "stun:stun.stunprotocol.org"
-            }
-        ]
-    });
-    peer.ontrack = (e) => handleTrackEvent(e, peer);
-    const desc = new RTCSessionDescription(body.sdp);
-    await peer.setRemoteDescription(desc);
-    const answer = await peer.createAnswer();
-    await peer.setLocalDescription(answer);
-    const payload = {
-        sdp: peer.localDescription
-    }
+// export const broadcast = async ({body}, res) => {
+//     const peer = new RTCPeerConnection({
+//         iceServers: [
+//             {
+//                 urls: "stun:stun.stunprotocol.org"
+//             }
+//         ]
+//     });
+//     peer.ontrack = (e) => handleTrackEvent(e, peer);
+//     const desc = new RTCSessionDescription(body.sdp);
+//     await peer.setRemoteDescription(desc);
+//     const answer = await peer.createAnswer();
+//     await peer.setLocalDescription(answer);
+//     const payload = {
+//         sdp: peer.localDescription
+//     }
 
-    res.json(payload);
-}
+//     res.json(payload);
+// }
 
-function handleTrackEvent(e, peer) {
-    senderStream = e.streams[0];
-};
+// function handleTrackEvent(e, peer) {
+//     senderStream = e.streams[0];
+// };
