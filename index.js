@@ -23,7 +23,7 @@ const app = express()
 
 app.use(bodyParser.json())
 app.use(cors({
-    origin: 'https://video-call-psi.vercel.app/', // frontend URL
+    origin: 'https://video-call-psi.vercel.app', // frontend URL
     credentials: true,
 }))
 
@@ -33,7 +33,7 @@ const server = createServer(app);
 
 const io = new Server(server, {
     cors: {
-        origin: 'https://video-call-psi.vercel.app/',
+        origin: 'https://video-call-psi.vercel.app',
         methods: ['GET', 'POST'],
         credentials: true
     }
