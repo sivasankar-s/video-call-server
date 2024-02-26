@@ -11,8 +11,5 @@ router.post("/loginAlumni", alumniSignIn);
 
 router.post("/loginStudent", studentSignIn);
 
-// router.post("/consumer", consumer);
-
-// router.post("/broadcast", broadcast);
 
 export default router;

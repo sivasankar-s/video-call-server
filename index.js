@@ -15,10 +15,6 @@ import authRoutes from './routes/auth.js'
 
 
 
-// Store room codes and connections
-
-
-
 const app = express()
 
 app.use(bodyParser.json())
@@ -36,9 +32,7 @@ const io = new Server(server, {
     }
 });
 
-const users = {};
 
-const socketToRoom = {};
 
 app.use('/auth', authRoutes);
 
@@ -47,59 +41,8 @@ const PORT = 5000
 mongoose.connect("mongodb+srv://supersiva004:siva2004@cluster0.5pmbvfs.mongodb.net/")
 // .then(() => app.listen(PORT, () => console.log('server running on localhost:5000'))).catch((err) => console.log(err));
 
-console.log('helllooo')
-// io.on('connection', (socket) => {
-//     console.log("in io")
-//     socket.on("join room", roomID => {
+// console.log('helllooo')
 
-//         console.log("in server join room on", roomID)
-//         console.log(users)
-//         if (users[roomID]) {
-//             const length = users[roomID].length;
-//             if (length === 4) {
-//                 socket.emit("room full");
-//                 return;
-//             }
-//             users[roomID].push(socket.id);
-//         } else {
-//             users[roomID] = [socket.id];
-//         }
-//         socketToRoom[socket.id] = roomID;
-//         const usersInThisRoom = users[roomID].filter(id => id !== socket.id);
-//         console.log(usersInThisRoom)
-
-//         socket.emit("all users", usersInThisRoom);
-//     });
-
-//     socket.on("candidate", ({ targetUser, candidate }) => {
-//         // Find the target peer and send the ICE candidate
-//         const targetPeer = users[targetUser];
-//         if (targetPeer) {
-//             targetPeer.socket.emit("candidate", {
-//                 callerID: socket.id,
-//                 candidate: candidate,
-//             });
-//         }
-//     });
-
-//     socket.on("sending signal", payload => {
-//         io.to(payload.userToSignal).emit('user joined', { signal: payload.signal, callerID: payload.callerID });
-//     });
-
-//     socket.on("returning signal", payload => {
-//         io.to(payload.callerID).emit('receiving returned signal', { signal: payload.signal, id: socket.id });
-//     });
-
-//     socket.on('disconnect', () => {
-//         const roomID = socketToRoom[socket.id];
-//         let room = users[roomID];
-//         if (room) {
-//             room = room.filter(id => id !== socket.id);
-//             users[roomID] = room;
-//         }
-//     });
-
-// });
 
 
 io.on("connection", (socket) => {
@@ -118,6 +61,5 @@ io.on("connection", (socket) => {
 	});
 });
 
-// server.listen(PORT || 8000, () => console.log('server is running on port 8000'));
-server.listen(PORT, () => console.log('server running on localhost:5000'))
+server.listen(PORT || 8000, () => console.log('server is running '));
 
