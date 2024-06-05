@@ -8,6 +8,8 @@ let senderStream;
 
 import Alumni from '../models/Alumni.js';
 import Student from '../models/Student.js';
+import Message from '../models/Message.js';
+import Events from '../models/Events.js';
 
 export const signIn = async(req, res) => {
     try {
@@ -36,27 +38,7 @@ export const alumniSignUp = async (req, res) => {
             email: req.body.email,
             custom_json: {phone: req.body.phone, yearOfPassing: req.body.yearOfPassing, dept: req.body.dept, company: req.body.company, role: req.body.role, type: req.body.type}
         };
-        
-        // var config = {
-        //     method: 'post',
-        //     url: 'https://api.chatengine.io/users/',
-        //     headers: {
-        //         'PRIVATE-KEY': '{{93e0cb0d-623d-4d2c-bbfd-5b0f1f1e7d8f}}'
-        //     },
-        //     data : data
-        // };
-        
-        axios.post('https://api.chatengine.io/users/', data, {
-    headers: {
-        'PRIVATE-KEY': '93e0cb0d-623d-4d2c-bbfd-5b0f1f1e7d8f',
-        'Content-Type': 'application/json'
-    }
-}).then(function (response) {
-            console.log(JSON.stringify(response.data));
-        })
-        .catch(function (error) {
-            console.log(error);
-        });
+
 
         console.log('in controller')
         console.log(user);
@@ -79,26 +61,7 @@ export const studentSignUp = async (req, res) => {
             custom_json: {regNo: req.body.regNo, phone: req.body.phone, yearOfPassing: req.body.yearOfPassing, dept: req.body.dept, type: req.body.type}
         };
         
-        // var config = {
-        //     method: 'post',
-        //     url: 'https://api.chatengine.io/users/',
-        //     headers: {
-        //         'PRIVATE-KEY': '{{93e0cb0d-623d-4d2c-bbfd-5b0f1f1e7d8f}}'
-        //     },
-        //     data : data
-        // };
-        
-        axios.post('https://api.chatengine.io/users/', data, {
-    headers: {
-        'PRIVATE-KEY': '93e0cb0d-623d-4d2c-bbfd-5b0f1f1e7d8f',
-        'Content-Type': 'application/json'
-    }
-}).then(function (response) {
-            console.log(JSON.stringify(response.data));
-        })
-        .catch(function (error) {
-            console.log(error);
-        });
+
 
         console.log('in controller')
         console.log(user);
@@ -116,22 +79,7 @@ export const alumniSignIn = async (req, res) => {
         console.log('in controller')
         console.log(user);
 
-        ////////////////////////////
-        // Fetch this user from Chat Engine in this project!
-  try {
-    const r = await axios.get("https://api.chatengine.io/users/me/", {
-      headers: {
-        "Project-ID": process.env.CHAT_ENGINE_PROJECT_ID,
-        "User-Name": req.body.name,
-        "User-Secret": req.body.password,
-      },
-    });
-    return res.status(r.status).json(r.data);
-  } catch (e) {
-    return res.status(e.response.status).json(e.response.data);
-  }
 
-        ///////////////////////////
 
         if(!user) return res.status(404).json({message: 'User Not Found'});
 
@@ -171,23 +119,6 @@ export const studentSignIn = async (req, res) => {
 
         if(!passCorrect) return res.status(404).json({message: 'Invalid Credentials'});
 
-        ////////////////////////////
-        // Fetch this user from Chat Engine in this project!
-//   try {
-//     const r = await axios.get("https://api.chatengine.io/users/me/", {
-//       headers: {
-//         "Project-ID": 
-//         "7d345cf2-58a6-4a0f-a0b9-4bb69d3d8f09",
-//         "User-Name": req.body.name,
-//         "User-Secret": req.body.password,
-//       },
-//     });
-//     return res.status(r.status).json(r.data);
-//   } catch (e) {
-//     return res.status(e.response.status).json(e.response.data);
-//   }
-
-        ///////////////////////////
 
         const token = jwt.sign({email: user.email, id: user._id}, 'test', {expiresIn: "1h"})
 
@@ -237,6 +168,76 @@ export const getStudent = async (req, res) => {
         console.log()
 
         res.status(200).json({result: student})
+  
+
+    } catch(err) {
+        res.status(404).json({message: 'in error msg'});
+    }
+}
+
+export const postMessage = async (req, res) => {
+    try{
+        // const message = await Student.find();
+
+        // console.log('in controller')
+        // console.log(student);
+
+        // if(!student) return res.status(404).json({message: 'Students Not Found'});
+    
+        // console.log()
+
+        // res.status(200).json({result: student})
+
+        const { username, avatar, text, group } = req.body;
+  const message = new Message({ username, avatar, text, group });
+  await message.save();
+  res.send(message);
+  
+
+    } catch(err) {
+        res.status(404).json({message: 'in error msg'});
+    }
+}
+
+export const getMessages = async (req, res) => {
+    try{
+      
+
+        const messages = await Message.find().sort({ timestamp: 1 });
+        // res.send({})
+
+        res.status(200).json({result: messages})
+  
+
+    } catch(err) {
+        res.status(404).json({message: 'in error msg'});
+    }
+}
+
+export const createEvent = async (req, res) => {
+    try{
+        const event = await Events.create(req.body);
+        console.log(req.body)
+
+        
+        console.log('in controller')
+        console.log(event);
+
+        res.status(200).json(event)
+    } catch(err) {
+        res.status(404).json({message: err.message});
+    }
+}
+
+
+export const getEvents = async (req, res) => {
+    try{
+      
+
+        const events = await Events.find();
+        // res.send({})
+
+        res.status(200).json({result: events})
   
 
     } catch(err) {
